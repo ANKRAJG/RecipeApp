@@ -1,6 +1,19 @@
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
 
+
+/* This Injectable code is used to Add this Service at the root level.
+   This is same as 
+    export class ShoppingListService { ... }
+    and
+    import { ShoppingListService } from './path/to/my.service';
+ 
+    @NgModule({
+      ...
+      providers: [ShoppingListService]
+    })
+    export class AppModule { ... } */
+@Injectable({providedIn: 'root'})
 export class ShoppingListService {
     ingredientsChanged = new EventEmitter<Ingredient[]>();
 
