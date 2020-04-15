@@ -1,14 +1,11 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
 @Injectable()
 export class RecipeService {
-    /* You can also Encapsulate this property 'recipeSelected' by providing a method 
-       to get access to it, once u emit the event */
-    // recipeSelected is basically and event emitted from this service
-    recipeSelected = new EventEmitter<Recipe>();
 
     // Make this recipes array as 'private', so that you can't directly access it from outside
     private recipes: Recipe[] = [
