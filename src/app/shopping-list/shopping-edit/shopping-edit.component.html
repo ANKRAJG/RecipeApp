@@ -19,8 +19,13 @@
                     <button type="submit" class="btn btn-success m-r5" [disabled]="!slForm.valid">
                         {{ editMode ? 'Update' : 'Add' }}
                     </button>
-                    <button type="button" class="btn btn-danger m-r5">Delete</button>
-                    <button type="button" class="btn btn-primary" (click)="onClearForm()">Clear</button>
+                    <button type="button" class="btn btn-danger m-r5" (click)="onDeleteItem()"
+                        [disabled]="!editMode">
+                        Delete
+                    </button>
+                    <button type="button" class="btn btn-primary" (click)="onClearForm()">
+                        Clear
+                    </button>
                 </div>
             </div>
         </form>
