@@ -26,6 +26,10 @@ export class RecipeListComponent implements OnInit, OnDestroy {
       .subscribe((recipes: Recipe[]) => {
           this.recipes = recipes;
       });
+
+    if(!this.recipes || this.recipes.length === 0) {
+      this.getAllRecipesFromServer();
+    }
   }
 
   ngOnDestroy():void {
@@ -34,6 +38,16 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
   onNewRecipe() {
     this.router.navigate(['new'], {relativeTo: this.route});
+  }
+
+  getAllRecipesFromServer() {
+    this.recipeService.getAllRecipesFromServer()
+      .subscribe(recipes => {
+        this.recipes = recipes;
+        this.recipeService.setRecipes(recipes);
+      }, error => {
+        console.log(error);
+      });
   }
 
 }
