@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
@@ -39,6 +39,22 @@ export class RecipeService {
         return this.recipes.slice();
     }
 
+    updateRecipeList(recipe: Recipe, index: number, type: string) {
+        switch(type) {
+            case 'add': {
+                this.recipes.push(recipe);
+                break;
+            } case 'update': {
+                this.recipes[index] = recipe;
+                break;
+            } case 'delete': {
+                this.recipes.splice(index, 1);
+                break;
+            }
+        }
+        this.recipesChanged.next(this.recipes.slice());
+    }
+
     getAllRecipesFromServer() {
         return this.http
             .get<{ [key: string]: Recipe }>('https://recipe-app-94551.firebaseio.com/recipes.json')
@@ -51,6 +67,10 @@ export class RecipeService {
                         }
                     }
                     return recipeArr;
+                }),
+                tap(recipes => {
+                    // tap is used to perform any operations inside it, without altering the original response
+                    this.setRecipes(recipes);
                 })
             );
     }

@@ -27,7 +27,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
           this.recipes = recipes;
       });
 
-    if(!this.recipes || this.recipes.length === 0) {
+    if(this.recipes.length === 0) {
       this.getAllRecipesFromServer();
     }
   }
@@ -44,7 +44,6 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.recipeService.getAllRecipesFromServer()
       .subscribe(recipes => {
         this.recipes = recipes;
-        this.recipeService.setRecipes(recipes);
       }, error => {
         console.log(error);
       });

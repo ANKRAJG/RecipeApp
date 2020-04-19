@@ -63,10 +63,7 @@ export class RecipeEditComponent implements OnInit {
     this.recipeService.addRecipe(recipe)
       .subscribe(response => {
           recipe.recipeId = response.name;
-          const recipes = this.recipeService.getRecipes();
-          recipes.push(recipe);
-          this.recipeService.setRecipes(recipes);
-          this.recipeService.recipesChanged.next(recipes.slice());
+          this.recipeService.updateRecipeList(recipe, null, 'add');
           this.onCancel();
       }, error => {
           console.log(error.message);
@@ -78,10 +75,7 @@ export class RecipeEditComponent implements OnInit {
     delete newRecipe.recipeId;
     this.recipeService.updateRecipe(origNewRecipe.recipeId, newRecipe)
       .subscribe(response => {
-          const recipes = this.recipeService.getRecipes();
-          recipes[index] = origNewRecipe;
-          this.recipeService.setRecipes(recipes);
-          this.recipeService.recipesChanged.next(recipes.slice());
+          this.recipeService.updateRecipeList(origNewRecipe, index, 'update');
           this.onCancel();
       }, error => {
           console.log(error.message);

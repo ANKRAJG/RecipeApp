@@ -18,10 +18,6 @@ export class RecipeDetailComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    // This will only work for the first we load this component
-    // But we want to change this id on click list-item click
-    //const id = this.route.snapshot.params['id'];
-
     this.route.params
       .subscribe(
         (param: Params) => {
@@ -43,10 +39,7 @@ export class RecipeDetailComponent implements OnInit {
   onDeleteRecipe() {
     this.recipeService.deleteRecipe(this.recipe.recipeId)
       .subscribe(response => {
-          const recipes = this.recipeService.getRecipes();
-          recipes.splice(this.id, 1);
-          this.recipeService.setRecipes(recipes);
-          this.recipeService.recipesChanged.next(recipes.slice());
+          this.recipeService.updateRecipeList(null, this.id, 'delete');
           this.router.navigate(['/recipes'], {relativeTo: this.route});
       }, error => {
         console.log(error);
