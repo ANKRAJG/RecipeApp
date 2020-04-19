@@ -37,7 +37,9 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
   onSubmitItem(form: NgForm) {
     const value = form.value;
-    const newIngredient = new Ingredient(value.name, value.amount);
+    // This syntax is when using class constructor for creating Ingredient model
+    //const newIngredient = new Ingredient(value.name, value.amount);
+    const newIngredient: Ingredient =  { name: value.name, amount: value.amount };
     if(this.editMode) {
       this.slService.updateIngredient(this.editedItemIndex, newIngredient);
     } else {
@@ -54,7 +56,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
   onDeleteItem() {
     this.slForm.reset();
-    this.slService.deleteIngredient(this.editedItemIndex);
+    this.slService.deleteIngredient(this.editedItemIndex, this.editedItem.ingredientId);
   }
 
   ngOnDestroy(): void {

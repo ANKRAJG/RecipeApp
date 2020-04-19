@@ -80,8 +80,12 @@ export class RecipeService {
     }
 
     addIngredientsToShoppingList(ingredients: Ingredient[]) {
-        this.slService.addIngredients(ingredients);
-        this.recipesChanged.next(this.recipes.slice());
+        this.slService.addIngredients(ingredients, null)
+            .subscribe(ingredients => {
+                this.recipesChanged.next(this.recipes.slice());
+            }, error => {
+                console.log(error);
+            });
     }
 
     addRecipe(recipe: Recipe) {
