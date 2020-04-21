@@ -9,7 +9,7 @@ import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
 @Injectable({providedIn: 'root'})
 export class RecipeService {
-    recipesChanged = new Subject<Recipe[]>();
+    //recipesChanged = new Subject<Recipe[]>();
 
     // Make this recipes array as 'private', so that you can't directly access it from outside
     private recipes: Recipe[] = [
@@ -36,7 +36,7 @@ export class RecipeService {
     getRecipes() {
         // Add slice, so that we shouldn't change the recipes array from outside
         // It returns the exact copy of recipes
-        return this.recipes.slice();
+        return this.recipes;
     }
 
     updateRecipeList(recipe: Recipe, index: number, type: string) {
@@ -52,7 +52,7 @@ export class RecipeService {
                 break;
             }
         }
-        this.recipesChanged.next(this.recipes.slice());
+        //this.recipesChanged.next(this.recipes.slice());
     }
 
     getAllRecipesFromServer() {
@@ -82,7 +82,7 @@ export class RecipeService {
     addIngredientsToShoppingList(ingredients: Ingredient[]) {
         this.slService.addIngredients(ingredients, null)
             .subscribe(ingredients => {
-                this.recipesChanged.next(this.recipes.slice());
+                //this.recipesChanged.next(this.recipes.slice());
             }, error => {
                 console.log(error);
             });
