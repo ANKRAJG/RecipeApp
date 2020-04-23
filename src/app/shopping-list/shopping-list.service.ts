@@ -59,26 +59,27 @@ export class ShoppingListService {
     addIngredient(ingredient: Ingredient) {
       let ingredients = this.ingredients.slice();
       ingredients.push(ingredient);
-      this.addIngredients(ingredients, 'forAddUpdate').subscribe();
+      this.addIngredientsToServer(ingredients).subscribe();
     }
 
-    addIngredients(ingredientsToAdd: Ingredient[], type: string) {
+    addIngredients(ingredientsToAdd: Ingredient[]) {
       /* The downside of using this for loop is that, 
          we'll have to emit lot of ingredientsChanged events */
       // for(let ingredient of ingredients) {
       //   this.ingredients.push(ingredient);
       //   this.ingredientsChanged.emit(this.ingredients.slice());
       // }
-      if(!type) {
-        let ingredientsOrig = this.ingredients.slice();
-        ingredientsOrig.push(...ingredientsToAdd);
-        ingredientsToAdd = ingredientsOrig.slice();
-      }
-      ingredientsToAdd.map(item => {
+      let ingredientsOrig = this.ingredients.slice();
+      ingredientsOrig.push(...ingredientsToAdd);
+      return this.addIngredientsToServer(ingredientsOrig);
+    }
+
+    addIngredientsToServer(ingredients: Ingredient[]) {
+      ingredients.map(item => {
         delete item.ingredientId;
         return item;
       });
-      return this.http.put<Ingredient[]>('https://recipe-app-94551.firebaseio.com/ingredients.json', ingredientsToAdd)
+      return this.http.put<Ingredient[]>('https://recipe-app-94551.firebaseio.com/ingredients.json', ingredients)
         .pipe(
           map(response => {
             const ingArr = [];
@@ -94,12 +95,13 @@ export class ShoppingListService {
             //this.ingredientsChanged.next(this.ingredients.slice());
           })
         );
+
     }
 
     updateIngredient(index: number, newIng: Ingredient) {
       let ingredientsCopy = this.ingredients.slice();
       ingredientsCopy[index] = newIng;
-      this.addIngredients(ingredientsCopy, 'forAddUpdate').subscribe();
+      this.addIngredientsToServer(ingredientsCopy).subscribe();
     }
 
     deleteIngredient(index: number, ingredientId: number) {

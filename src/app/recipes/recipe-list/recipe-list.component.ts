@@ -11,6 +11,7 @@ import { RecipeService } from '../recipe.service';
   styleUrls: ['./recipe-list.component.scss']
 })
 export class RecipeListComponent implements OnInit {
+  isLoading = false;
   recipes: Recipe[];
   /* Created this recipesChangedSub to destroy it once the component is destroyed,
      to avoid memory leaks */
@@ -41,10 +42,13 @@ export class RecipeListComponent implements OnInit {
   }
 
   getAllRecipesFromServer() {
+    this.isLoading = true;
     this.recipeService.getAllRecipesFromServer()
       .subscribe(recipes => {
+        this.isLoading = false;
         this.recipes = recipes;
       }, error => {
+        this.isLoading = false;
         console.log(error);
       });
   }

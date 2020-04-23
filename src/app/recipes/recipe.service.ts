@@ -79,7 +79,7 @@ export class RecipeService {
     }
 
     addIngredientsToShoppingList(ingredients: Ingredient[]) {
-        this.slService.addIngredients(ingredients, null)
+        this.slService.addIngredients(ingredients)
             .subscribe(ingredients => {
                 //this.recipesChanged.next(this.recipes.slice());
             }, error => {
