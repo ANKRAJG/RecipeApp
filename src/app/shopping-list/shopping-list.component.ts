@@ -22,9 +22,9 @@ export class ShoppingListComponent implements OnInit {
     //     this.ingredients = ingredients;
     //   });
     
-      if(this.ingredients.length === 0) {
-        this.getIngredientsFromServer();
-      }
+    if(this.ingredients.length === 0) {
+      this.getIngredientsFromServer();
+    }
   }
 
   // ngOnDestroy(): void {
