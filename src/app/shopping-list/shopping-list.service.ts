@@ -30,7 +30,7 @@ export class ShoppingListService {
     constructor(private http: HttpClient) {}
 
     setIngredients(ingredients: Ingredient[]) {
-      this.ingredients = ingredients;
+      this.ingredients = ingredients.slice();
     }
 
     getIngredients() {
@@ -57,11 +57,12 @@ export class ShoppingListService {
     }
 
     addIngredient(ingredient: Ingredient) {
-      this.ingredients.push(ingredient);
-      this.addIngredients(this.ingredients, 'forAddUpdate').subscribe();
+      let ingredients = this.ingredients.slice();
+      ingredients.push(ingredient);
+      this.addIngredients(ingredients, 'forAddUpdate').subscribe();
     }
 
-    addIngredients(ingredients: Ingredient[], type: string) {
+    addIngredients(ingredientsToAdd: Ingredient[], type: string) {
       /* The downside of using this for loop is that, 
          we'll have to emit lot of ingredientsChanged events */
       // for(let ingredient of ingredients) {
@@ -69,13 +70,15 @@ export class ShoppingListService {
       //   this.ingredientsChanged.emit(this.ingredients.slice());
       // }
       if(!type) {
-        this.ingredients.push(...ingredients);
+        let ingredientsOrig = this.ingredients.slice();
+        ingredientsOrig.push(...ingredientsToAdd);
+        ingredientsToAdd = ingredientsOrig.slice();
       }
-      this.ingredients.map(item => {
+      ingredientsToAdd.map(item => {
         delete item.ingredientId;
         return item;
       });
-      return this.http.put<Ingredient[]>('https://recipe-app-94551.firebaseio.com/ingredients.json', this.ingredients)
+      return this.http.put<Ingredient[]>('https://recipe-app-94551.firebaseio.com/ingredients.json', ingredientsToAdd)
         .pipe(
           map(response => {
             const ingArr = [];
@@ -87,15 +90,16 @@ export class ShoppingListService {
             return ingArr;
           }),
           tap(ingredients => {
-            this.ingredients = ingredients;
+            this.setIngredients(ingredients);
             //this.ingredientsChanged.next(this.ingredients.slice());
           })
         );
     }
 
     updateIngredient(index: number, newIng: Ingredient) {
-      this.ingredients[index] = newIng;
-      this.addIngredients(this.ingredients, 'forAddUpdate').subscribe();
+      let ingredientsCopy = this.ingredients.slice();
+      ingredientsCopy[index] = newIng;
+      this.addIngredients(ingredientsCopy, 'forAddUpdate').subscribe();
     }
 
     deleteIngredient(index: number, ingredientId: number) {
