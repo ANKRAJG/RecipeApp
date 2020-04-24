@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
         LoadingSpinnerComponent
     ],
     exports: [
+        // Exporting this component, coz we wanna use it in other modules
         LoadingSpinnerComponent
     ]
 })
