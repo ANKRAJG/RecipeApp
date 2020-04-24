@@ -7,9 +7,13 @@ import { CommonModule } from '@angular/common';
     declarations: [
         LoadingSpinnerComponent
     ],
+    imports: [
+        CommonModule
+    ],
     exports: [
         // Exporting this component, coz we wanna use it in other modules
-        LoadingSpinnerComponent
+        LoadingSpinnerComponent,
+        CommonModule
     ]
 })
 export class SharedModule {
