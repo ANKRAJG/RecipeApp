@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 
-import { User } from '../user/user.model';
+import { User } from './user.model';
 import { Router } from '@angular/router';
 
 interface AuthResponseData {

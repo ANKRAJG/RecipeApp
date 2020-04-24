@@ -9,7 +9,7 @@ import { RecipeResolverService } from './recipes/recipe.resolver.service';
 import { UserComponent } from './user/user.component';
 import { LoginComponent } from './user/login/login.component';
 import { RegisterComponent } from './user/register/register.component';
-import { AuthGuardService } from './services/auth-guard.service';
+import { AuthGuardService } from './user/auth-guard.service';
 
 
 const routes: Routes = [
