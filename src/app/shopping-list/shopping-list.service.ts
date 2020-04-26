@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { Ingredient } from '../shared/ingredient.model';
@@ -19,7 +19,7 @@ import { tap, map } from 'rxjs/operators';
     export class AppModule { ... } */
 @Injectable({providedIn: 'root'})
 export class ShoppingListService {
-    //ingredientsChanged = new Subject<Ingredient[]>();
+    ingredientsChanged = new BehaviorSubject<Ingredient[]>(null);
     startedEditing = new Subject<number>();
 
     private ingredients: Ingredient[] = [
@@ -92,7 +92,7 @@ export class ShoppingListService {
           }),
           tap(ingredients => {
             this.setIngredients(ingredients);
-            //this.ingredientsChanged.next(this.ingredients.slice());
+            this.ingredientsChanged.next(this.ingredients.slice());
           })
         );
 
@@ -108,7 +108,7 @@ export class ShoppingListService {
       this.http.delete<any>('https://recipe-app-94551.firebaseio.com/ingredients/' + ingredientId + '.json')
         .subscribe(response => {
           this.ingredients.splice(index, 1);
-          //this.ingredientsChanged.next(this.ingredients.slice());
+          this.ingredientsChanged.next(this.ingredients.slice());
         }, error => {
           console.log(error);
         });
