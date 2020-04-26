@@ -1,22 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthenticationService } from 'src/app/user/authentication.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMsg: string = null;
+  private userSub: Subscription;
 
   constructor(private authService: AuthenticationService,
               private router: Router) { }
 
   ngOnInit(): void {
+    this.userSub = this.authService.user.subscribe(user => {
+        if(user) {
+          this.router.navigate(['/recipes']);
+        }
+    });
+  }
 
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe();
   }
 
   onLogin(form: NgForm) { 

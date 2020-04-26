@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 const routes: Routes = [
-    // Fallback when no prior route is matched
+    // Fallback when no path is typed
     { path: '', redirectTo: '/recipes', pathMatch: 'full' },
 
     /* Code below for Lazily Loading Feature Modules
@@ -25,7 +25,10 @@ const routes: Routes = [
     { 
         path: 'user', 
         loadChildren: () => import('./user/user.module').then(m => m.UserModule) 
-    }
+    },
+
+    // Fallback when no prior route is matched
+    { path: '**', redirectTo: '/recipes', pathMatch: 'full' },
 ];
 
 @NgModule({

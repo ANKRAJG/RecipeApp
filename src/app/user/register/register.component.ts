@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { AuthenticationService } from 'src/app/user/authentication.service';
 
@@ -9,16 +10,26 @@ import { AuthenticationService } from 'src/app/user/authentication.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
   isLoading = false;
   errorMsg: string = null;
+  private userSub: Subscription;
+
   constructor(private authService: AuthenticationService,
               private router: Router) { }
 
   ngOnInit(): void {
-
+    this.userSub = this.authService.user.subscribe(user => {
+        if(user) {
+          this.router.navigate(['/recipes']);
+        }
+    });
     this.initForm();
+  }
+
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe();
   }
 
   initForm() {
