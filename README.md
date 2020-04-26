@@ -29,14 +29,14 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Deploy App using
 1. After installing firebase-cli using command:
    npm install -g firebase-tools
-2. Login to firebase
-   firebase login
-3. Initialize firebase
-   firebase init
+2. Login to firebase:
+   "firebase login"
+3. Initialize firebase:
+   "firebase init"
    Then, select certain options that suits ur app.
    Put the dist/recipeApp folder to deploy as SPA.
-4. Deploy firebase
-   firebase deploy
+4. Deploy firebase:
+   "firebase deploy"
    This will give u URL for the deployed application
 
 ## Visit Application
